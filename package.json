@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "mistral": "^0.0.4",
     "next": "15.2.3",
     "ollama": "^0.5.14",
     "openai": "^4.89.1",
