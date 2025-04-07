@@ -1,22 +1,29 @@
 "use client";
-
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export default function Prompt() {
+  const router = useRouter();
   const [prompt, setPrompt] = useState<string>("");
   const [response, setResponse] = useState<string>("");
+  enum Type {
+    INITIAL = "initial",
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setResponse("Loading...");
 
     try {
-      const res = await fetch("/api/generate", {
+      const res = await fetch("/api/LLM", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, type: Type.INITIAL }),
       });
 
       if (!res.ok) {
@@ -32,7 +39,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1>OpenAI Integration with Next.js</h1>
+      <button
+        className="absolute top-1 left-1"
+        type="button"
+        onClick={() => router.push("/")}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className="text-white text-2xl" />
+      </button>
       <form onSubmit={handleSubmit}>
         <textarea
           className="w-full p-2 rounded-md border-2 border-gray-300 bg-gray-100"

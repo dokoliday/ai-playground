@@ -4,12 +4,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const { prompt } = await request.json();
-
     const response = await ollama.chat({
-      model: "llama2",
+      model: "gemma3:1b",
       messages: [{ role: "user", content: prompt }],
     });
-
     const res = NextResponse.json({ message: response.message.content });
     return res;
   } catch (error) {
